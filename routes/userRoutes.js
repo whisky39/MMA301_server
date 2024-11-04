@@ -33,7 +33,7 @@ router.post('/create', limiter, createController)
 router.post('/login', limiter, loginController)
 
 // Logout
-router.get("/logout", isAuth, logoutController);
+router.post("/logout", isAuth, logoutController);
 
 // Get User Profile
 router.get('/profile', isAuth, getUserProfileController)

@@ -4,7 +4,6 @@ import userModel from '../models/userModel.js'
 // User Auth
 export const isAuth = async (req, res, next) => {
   const { token } = req.cookies;
-  console.log("Token received:", token);
 
   // Validation
   if (!token) {
