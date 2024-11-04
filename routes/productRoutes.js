@@ -10,13 +10,17 @@ import {
   getTopProductsController,
   productReviewController,
   updateProductController,
-  updateProductImageController
+  updateProductImageController,
+  getAllProductsByCateController
 } from '../controllers/productController.js'
 
 const router = express.Router()
 
 // Get All Products
 router.get('/get-all', getAllProductsController)
+
+// Get All Products
+router.get('/get/:cate', getAllProductsByCateController)
 
 // Get TOP Products
 router.get('/top', getTopProductsController)

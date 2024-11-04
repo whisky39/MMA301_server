@@ -49,6 +49,44 @@ export const getTopProductsController = async (req, res) => {
   }
 };
 
+// Get all Product by cate
+export const getAllProductsByCateController = async (req, res) => {
+  try {
+    const category = req.params.cate; // Lấy category từ params
+    const products = await productModel.find({ category: category }); // Tìm tất cả sản phẩm theo category
+    
+    // validation
+    if (!products || products.length === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "No products found for this category",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Products found",
+      products, // Trả về danh sách sản phẩm
+    });
+  } catch (error) {
+    console.log(error);
+    // Xử lý lỗi cast hoặc OBJECT ID
+    if (error.name === "CastError") {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid category",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error Get All Products by Category API",
+      error,
+    });
+  }
+};
+
+
+
 // Get Single Product
 export const getSingleProductController = async (req, res) => {
   try {
