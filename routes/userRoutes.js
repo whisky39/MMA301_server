@@ -7,7 +7,8 @@ import {
   passwordResetController,
   updatePasswordController,
   updateProfileController,
-  updateProfilePicController
+  updateProfilePicController,
+  getAllController
 } from '../controllers/userController.js'
 import { isAuth } from '../middlewares/authMiddlewares.js'
 import { singleUpload } from '../middlewares/multer.js'
@@ -37,6 +38,9 @@ router.post("/logout", isAuth, logoutController);
 
 // Get User Profile
 router.get('/profile', isAuth, getUserProfileController)
+
+// Get User Profile
+router.get('/getAll', isAuth, getAllController)
 
 // update profile
 router.put('/update-profile', isAuth, updateProfileController)
