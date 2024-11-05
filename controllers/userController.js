@@ -155,6 +155,35 @@ export const getUserProfileController = async (req, res) => {
   }
 };
 
+//Get List User Profile
+export const getAllController = async (req, res) => {
+  try {
+    const token = req.cookies['token']; 
+    
+    if (!token) {
+      return res.status(401).send({
+        success: false,
+        message: "No token provided, authorization denied.",
+      });
+    }
+    
+    const users = await userModel.find();
+
+    res.status(200).send({
+      success: true,
+      message: "Users Fetch Successfully",
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error In Profile API",
+      error,
+    });
+  }
+};
+
 // Update User Profile
 export const updateProfileController = async (req, res) => {
   try {
