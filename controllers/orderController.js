@@ -33,7 +33,7 @@ export const createOrderController = async (req, res) => {
       itemPrice: convertPriceToNumber(orderItems.price),
       tax: 10000,
       shippingCharges: 10000,
-      totalAmount: (convertPriceToNumber(orderItems.price) + 10000 + 10000),
+      totalAmount: convertPriceToNumber(orderItems.price) + 10000 + 10000,
     });
 
     // stock update
@@ -83,7 +83,7 @@ export const getMyOrdersController = async (req, res) => {
       });
     }
     res.status(200).send({
-      status : "OK",
+      status: "OK",
       success: true,
       message: "Your Order Data",
       totalOrder: orders.length,
@@ -168,7 +168,8 @@ export const paymentsController = async (req, res) => {
 export const getAllOrdersController = async (req, res) => {
   try {
     const orders = await orderModel.find({});
-    res.status(200).send({
+    res.status(200).json({
+      status: "OK",
       success: true,
       message: "All Orders Data",
       totalOrders: orders.length,
@@ -189,7 +190,7 @@ export const changeOrderStatusController = async (req, res) => {
   try {
     // find order
     const order = await orderModel.findById(req.params.id);
-
+    
     // validation
     if (!order) {
       return res.status(404).send({
@@ -198,21 +199,27 @@ export const changeOrderStatusController = async (req, res) => {
       });
     }
 
-    if (order.orderStatus === "processing") order.orderStatus = "shipped";
-    else if (order.orderStatus === "shipped") {
+    if (order.orderStatus === "processing") {
       order.orderStatus = "delivered";
       order.deliveredAt = Date.now();
     } else {
-      return res.status(500).send({
+      return res.status(200).json({
+        status: 500,
         success: false,
         message: "Order already delivered",
+        data: order
       });
     }
-    await order.save();
-    res.status(200).send({
-      success: true,
-      message: "Order status updated",
-    });
+    const newDelivery = await order.save();
+
+    if (newDelivery) {
+      return res.status(200).json({
+        status: "OK",
+        success: true,
+        message: "Order status updated",
+        data: newDelivery,
+      });
+    }
   } catch (error) {
     console.log(error);
     // cast error ||  OBJECT ID
