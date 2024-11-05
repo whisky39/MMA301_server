@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -48,6 +49,9 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       default: "user",
+    },
+    budged: {
+      type: Number,
     },
   },
   { timestamps: true }

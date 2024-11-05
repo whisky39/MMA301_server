@@ -48,32 +48,40 @@ const orderSchema = new mongoose.Schema(
       enum: ['COD', 'ONLINE'],
       default: 'COD'
     },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Users',
       required: [true, 'user id is require']
     },
+
     paidAt: Date,
+
     paymentInfo: {
       id: String,
       status: String
     },
+
     itemPrice: {
       type: Number,
       required: [true, 'item price is require']
     },
+
     tax: {
       type: Number,
       required: [true, 'tax price is require']
     },
+
     shippingCharges: {
       type: Number,
       required: [true, 'item shippingCharges  is require']
     },
+
     totalAmount: {
       type: Number,
       required: [true, 'item totalAmount price is require']
     },
+    
     orderStatus: {
       type: String,
       enum: ['processing', 'shipped', 'delivered'],
