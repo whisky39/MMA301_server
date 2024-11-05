@@ -129,6 +129,15 @@ export const logoutController = async (req, res) => {
 //Get User Profile
 export const getUserProfileController = async (req, res) => {
   try {
+    const token = req.cookies['token']; // Thay 'refresh_token' bằng tên cookie của bạn
+    
+    if (!token) {
+      return res.status(401).send({
+        success: false,
+        message: "No token provided, authorization denied.",
+      });
+    }
+    
     const user = await userModel.findById(req.user._id);
     user.password = undefined;
     res.status(200).send({
@@ -149,15 +158,23 @@ export const getUserProfileController = async (req, res) => {
 // Update User Profile
 export const updateProfileController = async (req, res) => {
   try {
+    const token = req.cookies['token']; // Thay 'refresh_token' bằng tên cookie của bạn
+    
+    if (!token) {
+      return res.status(401).send({
+        success: false,
+        message: "No token provided, authorization denied.",
+      });
+    }
     const user = await userModel.findById(req.user._id);
-    const { name, email, address, city, country, phone } = req.body;
+    const { name, password ,address, city, country, phone } = req.body;
     //Validation
     if (name) user.name = name;
-    if (email) user.email = email;
     if (address) user.address = address;
     if (city) user.city = city;
     if (country) user.country = country;
     if (phone) user.phone = phone;
+    if (password) user.password = password;
     //Save user
     await user.save();
     res.status(200).send({
