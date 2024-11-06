@@ -7,8 +7,10 @@ import { getDataUri } from "../utils/features.js";
 // Create User
 export const createController = async (req, res) => {
   try {
-    const { name, email, password, address, city, country, phone, answer } =
+    const { name, email, password, address, city, country, phone } =
+
       req.body;
+      
     if (
       !name ||
       !email ||
@@ -16,8 +18,8 @@ export const createController = async (req, res) => {
       !city ||
       !address ||
       !country ||
-      !phone ||
-      !answer
+      !phone
+
     ) {
       return res.status(500).send({
         success: false,
@@ -33,14 +35,18 @@ export const createController = async (req, res) => {
       city,
       country,
       phone,
-      answer,
+      answer: "11111",
     });
+if (user) {
+  res.status(201).json({
+    status: "OK",
+    success: true,
+    message: "User Created Successfully",
+    user,
 
-    res.status(201).send({
-      success: true,
-      message: "Registeration Success, please login",
-      user,
-    });
+  });
+} 
+
   } catch (error) {
     console.log(error);
     res.status(500).send({
