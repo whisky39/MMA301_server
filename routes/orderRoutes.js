@@ -8,6 +8,7 @@ import {
   getMyOrdersController,
   paymentsController,
   singleOrderDetailsController,
+  removeOrder
 } from '../controllers/orderController.js'
 
 const router = express.Router()
@@ -31,5 +32,10 @@ router.get('/admin/get-all-orders', isAuth, isAdmin, getAllOrdersController)
 
 // Change Order Status
 router.put('/admin/order/:id', isAuth, isAdmin, changeOrderStatusController)
+
+// Change Order Status
+router.delete('/admin/order/:id', isAuth, isAdmin, removeOrder)
+
+
 
 export default router

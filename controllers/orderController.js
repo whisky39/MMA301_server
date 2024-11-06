@@ -186,11 +186,38 @@ export const getAllOrdersController = async (req, res) => {
 };
 
 // Change Order Status
+export const removeOrder = async (req, res) => {
+  try {
+    // find order
+    const order = await orderModel.findByIdAndDelete(req.params.id);
+    if (order) {
+      return res.status(200).json({
+        status: "OK",
+        message: "Delete order successfully",
+      });
+    }
+  } catch (error) {
+    // cast error ||  OBJECT ID
+    if (error.name === "CastError") {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Id",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error Change Order Status Of Admin API",
+      error,
+    });
+  }
+};
+
+// Change Order Status
 export const changeOrderStatusController = async (req, res) => {
   try {
     // find order
     const order = await orderModel.findById(req.params.id);
-    
+
     // validation
     if (!order) {
       return res.status(404).send({
@@ -207,7 +234,7 @@ export const changeOrderStatusController = async (req, res) => {
         status: 500,
         success: false,
         message: "Order already delivered",
-        data: order
+        data: order,
       });
     }
     const newDelivery = await order.save();
